@@ -1,80 +1,373 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hello, Deno</title>
-  <link rel="preload" href="https://demo-styles.deno.deno.net/fonts/Moranga-Regular.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="https://demo-styles.deno.deno.net/fonts/Moranga-Medium.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="https://demo-styles.deno.deno.net/fonts/Recursive_Variable.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="https://demo-styles.deno.deno.net/styles.css">
-  <style>
-    img {
-      display: inline-block;
-      vertical-align: middle;
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"/>
+<title>ɴᴀɪʀᴏɴ</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --primary:#7c5cff;--primary2:#a78bfa;--cyan:#22d3ee;--pink:#f472b6;
+  --green:#34d399;--red:#f87171;--amber:#fbbf24;
+  --text:#f5f5fa;--dim:#8b8ba7;--dim2:#565678;
+  --line:rgba(124,92,255,.18);--glass:rgba(20,20,35,.55);
+}
+html,body{height:100%;overflow:hidden}
+body{background:#06060c;color:var(--text);font-family:'Outfit',sans-serif;min-height:100dvh;height:100dvh;display:flex;justify-content:center;align-items:center;user-select:none;-webkit-user-select:none;overflow:hidden;position:relative}
+#bg-video{position:fixed;inset:0;z-index:-20;width:100%;height:100%;object-fit:cover;pointer-events:none;opacity:0.45}
+#bg-overlay{position:fixed;inset:0;z-index:-15;background:rgba(6,6,12,0.7);pointer-events:none}
+#grid{position:fixed;inset:0;z-index:-4;pointer-events:none;background-image:linear-gradient(rgba(124,92,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(124,92,255,.05) 1px,transparent 1px);background-size:36px 36px}
+#orbs{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(70px)}
+.orb.o1{width:44vmax;height:44vmax;left:-15vmax;top:-15vmax;background:radial-gradient(circle,rgba(124,92,255,.35),transparent 60%);animation:fl1 20s ease-in-out infinite alternate}
+.orb.o2{width:38vmax;height:38vmax;right:-14vmax;top:10vmax;background:radial-gradient(circle,rgba(34,211,238,.28),transparent 60%);animation:fl2 24s ease-in-out infinite alternate}
+.orb.o3{width:34vmax;height:34vmax;left:6vmax;bottom:-20vmax;background:radial-gradient(circle,rgba(244,114,182,.28),transparent 60%);animation:fl3 28s ease-in-out infinite alternate}
+@keyframes fl1{to{transform:translate(12vmax,8vmax) scale(1.2)}}
+@keyframes fl2{to{transform:translate(-10vmax,10vmax) scale(.9)}}
+@keyframes fl3{to{transform:translate(-8vmax,-8vmax) scale(1.25)}}
+::-webkit-scrollbar{width:0}
+.screen{position:fixed;inset:0;z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;background:transparent;padding:14px;transition:opacity .4s,visibility .4s;opacity:0;visibility:hidden;pointer-events:none;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.screen.on{opacity:1;visibility:visible;pointer-events:auto}
+.sp-ring{width:44px;height:44px;border-radius:50%;border:2px solid rgba(124,92,255,.2);border-top-color:#a78bfa;border-right-color:#22d3ee;animation:spSpin .9s linear infinite;box-shadow:0 0 22px rgba(124,92,255,.5);margin-bottom:14px}
+@keyframes spSpin{to{transform:rotate(360deg)}}
+.sp-logo{font-family:'Cinzel',serif;font-weight:900;font-size:16px;letter-spacing:5px;background:linear-gradient(90deg,#a78bfa,#22d3ee,#f472b6,#a78bfa);background-size:300% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 3s linear infinite;margin-bottom:8px;text-align:center}
+@keyframes shine{to{background-position:300% center}}
+.sp-sub{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--dim)}
+.card-ui{width:100%;max-width:340px;padding:18px 16px 16px;border-radius:16px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);text-align:center;position:relative;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.5);margin:auto}
+.card-ui::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--primary2),var(--cyan),transparent)}
+.brand-logo{font-family:'Cinzel',serif;font-weight:900;font-size:14px;letter-spacing:4px;background:linear-gradient(90deg,#fff,#a78bfa 40%,#22d3ee 70%,#fff);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 5s linear infinite;margin-bottom:4px}
+.brand-tag{font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:3px;color:var(--dim);margin-bottom:14px}
+.icon-box{width:40px;height:40px;margin:0 auto 10px;border-radius:11px;background:linear-gradient(135deg,rgba(124,92,255,.25),rgba(244,114,182,.15));border:1px solid rgba(124,92,255,.4);display:flex;align-items:center;justify-content:center}
+.icon-box svg{width:18px;height:18px;stroke:var(--primary2);fill:none;stroke-width:1.8}
+.title{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2.5px;color:var(--text);font-weight:800;margin-bottom:4px;text-transform:uppercase}
+.desc{font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:1.2px;color:var(--dim);margin-bottom:12px}
+.input-wrap{position:relative;margin-bottom:10px}
+.inp{width:100%;padding:11px 12px;border-radius:10px;background:rgba(0,0,0,.35);border:1.5px solid rgba(124,92,255,.35);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:1.5px;text-align:center;outline:none;transition:.25s}
+.inp::placeholder{color:var(--dim2);letter-spacing:1px;font-weight:500;font-size:12px}
+.inp:focus{border-color:var(--primary2);box-shadow:0 0 0 3px rgba(124,92,255,.15),0 0 18px rgba(124,92,255,.35);background:rgba(0,0,0,.5)}
+.inp.err{border-color:var(--red);animation:shake .4s}
+.inp.ok{border-color:var(--green)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.btn{width:100%;padding:11px;border-radius:10px;border:none;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,var(--primary),#a855f7 45%,#ec4899);box-shadow:0 6px 20px rgba(124,92,255,.4);transition:.25s;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.msg{margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1.2px;min-height:12px;font-weight:700}
+.msg.err{color:var(--red)}
+.msg.ok{color:var(--green)}
+.msg.info{color:var(--dim)}
+.back-btn{margin-top:10px;width:100%;padding:9px;border-radius:9px;background:transparent;border:1px solid rgba(124,92,255,.4);color:var(--primary2);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase;transition:.25s}
+.back-btn:hover{background:rgba(124,92,255,.1)}
+#s-search{justify-content:flex-start;padding-top:24px;padding-bottom:24px}
+.search-box{width:100%;max-width:340px;display:flex;flex-direction:column;gap:10px}
+.status-area{width:100%;max-width:340px;margin-top:12px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.status-card{width:100%;background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:20px 16px;text-align:center;animation:slideUp .4s ease}
+@keyframes slideUp{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
+.status-icon{width:56px;height:56px;margin:0 auto 12px;border-radius:50%;background:linear-gradient(135deg,rgba(52,211,153,.2),rgba(34,211,238,.15));border:1px solid rgba(52,211,153,.4);display:flex;align-items:center;justify-content:center;animation:pulse2 1.8s ease-in-out infinite}
+.status-icon svg{width:26px;height:26px;stroke:var(--green);fill:none;stroke-width:2}
+@keyframes pulse2{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(52,211,153,.5)}50%{transform:scale(1.06);box-shadow:0 0 0 14px rgba(52,211,153,0)}}
+.status-title{font-family:'Cinzel',serif;font-size:15px;letter-spacing:3px;font-weight:900;color:var(--green);margin-bottom:6px}
+.status-sub{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:2px;line-height:1.7}
+.status-badge{display:inline-block;margin-top:10px;padding:6px 14px;border-radius:20px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.4);font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--green);font-weight:700}
+.loader{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);display:none;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.loader.on{display:flex}
+.loader-ring{width:44px;height:44px;border-radius:50%;border:2px solid transparent;border-top-color:#22d3ee;border-right-color:#b14dff;animation:spSpin .9s linear infinite}
+.loader-text{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:4px;color:var(--cyan);text-transform:uppercase}
+.loader-sub{margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+#sound-unlock{position:fixed;inset:0;z-index:20000;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(6,6,12,0.85);backdrop-filter:blur(8px);cursor:pointer;transition:opacity .4s,visibility .4s}
+#sound-unlock.hide{opacity:0;visibility:hidden;pointer-events:none}
+#sound-unlock .su-ring{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,rgba(124,92,255,.25),rgba(34,211,238,.15));border:2px solid rgba(124,92,255,.5);display:flex;align-items:center;justify-content:center;animation:pulse 1.8s ease-in-out infinite;margin-bottom:14px}
+#sound-unlock .su-ring svg{width:30px;height:30px;stroke:#a78bfa;fill:none;stroke-width:1.8}
+#sound-unlock .su-text{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;color:#a78bfa;text-transform:uppercase;font-weight:700}
+#sound-unlock .su-sub{font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:2px;color:#565678;margin-top:6px}
+@keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(124,92,255,.5)}50%{transform:scale(1.08);box-shadow:0 0 0 18px rgba(124,92,255,0)}}
+.count-row{display:flex;gap:6px}
+.preset-btn{flex:1;padding:9px 6px;border-radius:9px;border:1.5px solid rgba(124,92,255,.35);background:rgba(0,0,0,.35);color:var(--primary2);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;cursor:pointer;letter-spacing:1px;transition:.25s}
+.preset-btn:hover{background:rgba(124,92,255,.15);border-color:var(--primary2)}
+.preset-btn.active{background:linear-gradient(135deg,var(--primary),#a855f7);color:#fff;border-color:transparent}
+.hint{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--cyan);letter-spacing:1.5px;text-align:center}
+@media (max-width:380px){.card-ui{max-width:100%;padding:16px 14px 14px}}
+@media (max-height:640px){.card-ui{padding:14px 12px 12px}}
+@media (min-width:768px){.card-ui{max-width:380px;padding:24px 22px 22px}}
+</style>
 </head>
-
 <body>
-    <main>
-      <section>
-        <a href="https://deno.com/deploy">
-        </a>
-      <h1>
-        <p>
-          Hello, Deno!
-        </p>
-      </h1>
-      <p>
-        This little example is being served by <a href="https://deno.com/">Deno</a>.
-        You can run it locally or in porduction on <a href="https://deno.com/deploy">Deno Deploy</a> or other hosting platforms.
-      </p>
-      <ul>
-        <li>Run it locally with<code>deno task dev</code></li>
-        <li>Deploy it to <a href="https://deno.com/deploy">Deno Deploy</a> via the CLI by running<code>deno deploy</code></li>
-        <li>Run it locally and share it publically by running <code>deno deploy --connected</code></li>
-      </ul>
-    </section>
-      <hr>
-    <section>
-      <h2>What's next?</h2>
-      <p>
-        You can clone this example and deploy it to Deno Deploy in just a few clicks
-        <a href="https://app.deno.com/new?clone=https://github.com/denoland/examples&path=hello-world"><img src="https://deno.com/button" alt="Deploy on Deno"/></a>
-      </p>
-      <ul>
-        <li>
-          <a href="https://docs.deno.com/examples">More examples in the Deno Docs</a>
-        </li>
-        <li>
-          <a href="https://deno.com/deploy">Deno Deploy Early Access</a>
-        </li>
-      </ul>
-    </section>
-    </main>
-    <hr>
-    <footer>
-      <section>
-      <ul class="flex-btwn">
-        <li>
-          <a href="https://deno.com">BlueSky</a>
-        </li>
-        <li>
-          <a href="https://deno.com">Twitter</a>
-        </li>
-        <li>
-          <a href="https://deno.com">YouTube</a>
-        </li>
-        <li>
-          <a href="https://deno.com">Newsletter</a>
-        </li>
-        <li>
-          <a href="https://deno.com">Deno</a>
-        </li>
-      </ul>
-      </section>
-    </footer>
+
+<div id="sound-unlock">
+  <div class="su-ring">
+    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+    </svg>
+  </div>
+  <div class="su-text">TAP TO ENABLE SOUND</div>
+  <div class="su-sub">BACKGROUND AUDIO ON</div>
+</div>
+
+<video id="bg-video" autoplay loop playsinline>
+  <source src="bg.mp4" type="video/mp4">
+</video>
+<div id="bg-overlay"></div>
+<div id="grid"></div>
+<div id="orbs"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i></div>
+
+<div class="screen on" id="s-splash">
+  <div class="sp-ring"></div>
+  <div class="sp-logo">ɴᴀɪʀᴏɴ</div>
+  <div class="sp-sub">INITIALIZING</div>
+</div>
+
+<div class="screen" id="s-login">
+  <div class="card-ui">
+    <div class="brand-logo">ɴᴀɪʀᴏɴ</div>
+    <div class="brand-tag">◈ ACCESS CONTROL ◈</div>
+    <div class="icon-box">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        <circle cx="12" cy="16" r="1.5"/>
+      </svg>
+    </div>
+    <div class="title">ENTER ACCESS KEY</div>
+    <div class="desc">VERIFY TO CONTINUE</div>
+    <div class="input-wrap">
+      <input type="password" class="inp" id="loginKey" placeholder="••••••••" autocomplete="off"/>
+    </div>
+    <button class="btn" id="loginBtn">UNLOCK</button>
+    <div class="msg info" id="loginMsg">Waiting for key...</div>
+  </div>
+</div>
+
+<div class="screen" id="s-search">
+  <div style="width:100%;max-width:340px;padding-bottom:12px;text-align:center">
+    <div class="brand-logo">ɴᴀɪʀᴏɴ</div>
+    <div class="brand-tag" style="margin-bottom:0">◈ RETRY ENGINE ◈</div>
+  </div>
+  <div class="search-box">
+    <div class="input-wrap" style="margin-bottom:0">
+      <input type="tel" class="inp" id="numInput" placeholder="03xxxxxxxx" inputmode="numeric" maxlength="11" autocomplete="off"/>
+    </div>
+    <div class="input-wrap" style="margin-bottom:0">
+      <input type="tel" class="inp" id="countInput" placeholder="REQUEST AMOUNT" inputmode="numeric" maxlength="2" autocomplete="off" value="10"/>
+    </div>
+    <div class="hint" id="hintText">▸ TARGET: 100 SUCCESSFUL REQUESTS</div>
+    <div class="count-row">
+      <button class="preset-btn active" data-count="10">10</button>
+      <button class="preset-btn" data-count="20">20</button>
+      <button class="preset-btn" data-count="30">30</button>
+      <button class="preset-btn" data-count="50">50</button>
+    </div>
+    <button class="btn" id="getBtn">SEND REQUESTS</button>
+    <button class="back-btn" onclick="logout()">← BACK TO LOGIN</button>
+  </div>
+  <div class="status-area" id="statusArea"></div>
+</div>
+
+<div class="loader" id="loader">
+  <div class="loader-ring"></div>
+  <div class="loader-text" id="loaderText">SENDING</div>
+  <div class="loader-sub" id="loaderSub">0 / 100</div>
+</div>
+
+<script>
+// ⚠️ YAHAN apna Deno Deploy URL daalo
+const BURST_URL = 'https://YOUR-PROJECT.deno.net/run';
+const VERIFY_URL = 'https://bar-94.dobrain666.deno.net/';
+const MULTIPLIER = 10;
+const $ = id => document.getElementById(id);
+
+function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on')); const el=$(id); if(el) el.classList.add('on'); }
+
+async function verify(key){
+  try{
+    const r = await fetch(VERIFY_URL + '?key=' + encodeURIComponent(key), { cache:'no-store' });
+    if(!r.ok) return null;
+    return await r.json();
+  }catch(e){ return null; }
+}
+
+async function login(){
+  const inp=$('loginKey'), btn=$('loginBtn'), msg=$('loginMsg');
+  const key = inp.value.trim();
+  if(!key){ inp.classList.add('err'); msg.className='msg err'; msg.textContent='✕ Enter key'; setTimeout(()=>inp.classList.remove('err'),500); return; }
+  inp.classList.remove('err','ok');
+  btn.disabled = true; const old = btn.innerHTML; btn.innerHTML = 'VERIFYING...';
+  msg.className='msg info'; msg.textContent='Contacting server...';
+  const data = await verify(key);
+  if(!data || data.status !== 'verified'){
+    inp.classList.add('err'); msg.className='msg err'; msg.textContent='✕ Invalid Key';
+    setTimeout(()=>inp.classList.remove('err'),600);
+    btn.disabled=false; btn.innerHTML=old; return;
+  }
+  inp.classList.add('ok'); msg.className='msg ok'; msg.textContent='✓ '+(data.name||key);
+  setTimeout(()=>{
+    inp.value='';
+    show('s-search');
+    btn.disabled=false; btn.innerHTML=old;
+  },500);
+}
+$('loginBtn').addEventListener('click', login);
+$('loginKey').addEventListener('keydown', e=>{ if(e.key==='Enter') login(); });
+
+function logout(){
+  $('loginKey').value='';
+  $('loginMsg').className='msg info';
+  $('loginMsg').textContent='Waiting for key...';
+  $('statusArea').innerHTML='';
+  show('s-login');
+}
+
+// ---------- preset buttons ----------
+document.querySelectorAll('.preset-btn').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('.preset-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    $('countInput').value = b.dataset.count;
+    updateHint();
+  });
+});
+
+function updateHint(){
+  const user = parseInt($('countInput').value, 10) || 10;
+  const target = Math.min(user * MULTIPLIER, 500);
+  $('hintText').textContent = `▸ TARGET: ${target} SUCCESSFUL REQUESTS`;
+}
+
+// ---------- inputs ----------
+$('numInput').addEventListener('input', e=>{ e.target.value = e.target.value.replace(/\D/g,'').slice(0,11); });
+$('countInput').addEventListener('input', e=>{
+  e.target.value = e.target.value.replace(/\D/g,'').slice(0,2);
+  document.querySelectorAll('.preset-btn').forEach(x=>x.classList.remove('active'));
+  updateHint();
+});
+$('numInput').addEventListener('keydown', e=>{ if(e.key==='Enter') doSend(); });
+$('getBtn').addEventListener('click', doSend);
+
+async function doSend(){
+  const num = $('numInput').value.trim();
+  const countRaw = $('countInput').value.trim() || '10';
+  const userCount = Math.max(1, Math.min(50, parseInt(countRaw, 10) || 10));
+  const target = Math.min(userCount * MULTIPLIER, 500);
+  const area = $('statusArea');
+
+  if(num.length < 10){
+    $('numInput').classList.add('err');
+    setTimeout(()=>$('numInput').classList.remove('err'),500);
+    return;
+  }
+
+  $('loader').classList.add('on');
+  $('loaderText').textContent = 'SENDING';
+  $('loaderSub').textContent = `0 / ${target}`;
+  $('getBtn').disabled = true;
+  area.innerHTML = '';
+
+  try{
+    const url = BURST_URL + '?num=' + encodeURIComponent(num) + '&count=' + userCount;
+
+    // 🔥 Fake progress animation — jab tak real response na aaye
+    let fakeSent = 0;
+    const fakeTimer = setInterval(()=>{
+      if(fakeSent < target - 1){
+        fakeSent++;
+        $('loaderSub').textContent = `${fakeSent} / ${target}`;
+      }
+    }, 250);
+
+    const res = await fetch(url, { cache: 'no-store' });
+    const data = await res.json().catch(()=>null);
+
+    clearInterval(fakeTimer);
+
+    $('loader').classList.remove('on');
+    $('getBtn').disabled = false;
+
+    if(data && data.ok){
+      showStatus(area, num, data);
+    } else {
+      showError(area, (data && data.error) || 'Request failed');
+    }
+  }catch(e){
+    console.error(e);
+    $('loader').classList.remove('on');
+    $('getBtn').disabled = false;
+    showError(area, 'Server unreachable');
+  }
+}
+
+function showStatus(area, num, data){
+  const f = data.fitflex || { sent: 0, failed: 0, totalAttempts: 0, complete: false, via: {} };
+  const target = data.target;
+  const complete = f.sent >= target;
+
+  const viaStr = Object.entries(f.via || {}).map(([k,v])=>`${k}:${v}`).join(' · ') || '-';
+
+  area.innerHTML = `
+    <div class="status-card" style="${complete ? '' : 'border-color:rgba(251,191,36,.5)'}">
+      <div class="status-icon" style="${complete ? '' : 'background:linear-gradient(135deg,rgba(251,191,36,.2),rgba(244,114,182,.15));border-color:rgba(251,191,36,.4);animation:none'}">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" style="${complete ? '' : 'stroke:var(--amber)'}">
+          ${complete
+            ? '<polyline points="20 6 9 17 4 12"/>'
+            : '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'}
+        </svg>
+      </div>
+      <div class="status-title" style="${complete ? '' : 'color:var(--amber)'}">
+        ${complete ? 'ALL SENT' : 'PARTIAL'}
+      </div>
+      <div class="status-sub">
+        TARGET: ${num}<br>
+        INTL: ${data.msisdn}<br>
+        SUCCESS: <span style="color:var(--green)">${f.sent}</span> / ${target}<br>
+        FAILED: <span style="color:var(--red)">${f.failed}</span><br>
+        ATTEMPTS: ${f.totalAttempts}<br>
+        TIME: ${data.elapsed}s
+      </div>
+      <div class="status-badge" style="${complete ? '' : 'color:var(--amber);background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.4)'}">
+        ▸ ${complete ? 'COMPLETE' : 'MAX RETRIES REACHED'}
+      </div>
+    </div>`;
+}
+
+function showError(area, msg){
+  area.innerHTML = `
+    <div class="status-card" style="border-color:rgba(248,113,113,.5)">
+      <div class="status-title" style="color:var(--red)">SENDING FAILED</div>
+      <div class="status-sub">${msg || 'Unknown error'}</div>
+      <div class="status-badge" style="color:var(--red);background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.4)">✕ ERROR</div>
+    </div>`;
+}
+
+// ---------- AUDIO ----------
+const bgVideo = document.getElementById('bg-video');
+const soundUnlock = document.getElementById('sound-unlock');
+
+bgVideo.muted = true;
+bgVideo.volume = 1.0;
+bgVideo.play().catch(()=>{});
+
+soundUnlock.addEventListener('click', async ()=>{
+  try{
+    bgVideo.muted = false;
+    bgVideo.volume = 1.0;
+    await bgVideo.play();
+  }catch(e){ console.warn('audio unlock failed', e); }
+  soundUnlock.classList.add('hide');
+});
+
+const _origShow = show;
+window.show = function(id){
+  _origShow(id);
+  if(id === 's-login' || id === 's-search'){
+    if(soundUnlock.classList.contains('hide')) bgVideo.muted = false;
+  } else {
+    bgVideo.muted = true;
+  }
+};
+
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{ show('s-login'); }, 1500);
+});
+</script>
 </body>
-</html>
+  </html>
